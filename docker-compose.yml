@@ -1,0 +1,59 @@
+version: '3.1'
+
+services:
+
+  redis:
+    image: redis:6
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+      MARIADB_DATABASE: torpedo
+    ports:
+      - 3306:3306
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=S3cret
+      - POSTGRES_USER=torpedo
+      - POSTGRES_DB=torpedo
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8086:80
+    environment:
+      - PMA_ARBITRARY=1

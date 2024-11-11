@@ -1,0 +1,17 @@
+// Package redis implements Redis output
+package redis
+
+import (
+	redis "github.com/go-redis/redis/v8"
+)
+
+// redisRepository Redis output repository.
+// Custom repository logic should be placed here.
+type redisRepository struct {
+	*redisRepositoryBase // DO NOT REMOVE IT
+}
+
+// NewRedisRepository repository constructor
+func NewRedisRepository(client *redis.Client, cryptoKey []byte) *redisRepository {
+	return &redisRepository{redisRepositoryBase: newRedisRepositoryBase(client, cryptoKey)}
+}

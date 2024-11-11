@@ -1,0 +1,24 @@
+// Package redis_mongodb is an output adapter to store entities into mongodb with redis as cache layer
+package redis_mongodb
+
+import (
+	"{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}/outputs/mongodb"
+	redis "github.com/go-redis/redis/v8"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+// redisMongoRepository Redis+Mongo output repository.
+// Custom repository logic should be placed here.
+type redisMongoRepository struct {
+	*redisMongoRepositoryBase
+}
+
+// NewRedisMongoRepository repository constructor
+func NewRedisMongoRepository(client *redis.Client, collection *mongo.Collection, cryptoKey []byte) *redisMongoRepository {
+	return &redisMongoRepository{redisMongoRepositoryBase: newRedisMongoRepositoryBase(client, collection, cryptoKey)}
+}
+
+// NewRedisMongoRepositoryWithHooks repository constructor
+func NewRedisMongoRepositoryWithHooks(client *redis.Client, collection *mongo.Collection, cryptoKey []byte, hooks *mongodb.HookBuilder) *redisMongoRepository {
+	return &redisMongoRepository{redisMongoRepositoryBase: newRedisMongoRepositoryBaseWithHooks(client, collection, cryptoKey, hooks)}
+}

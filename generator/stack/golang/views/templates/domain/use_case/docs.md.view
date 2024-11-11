@@ -1,0 +1,17 @@
+{{hashtag}} Use Case: {{.Name}}
+
+
+{{.Description}}
+
+--------
+
+**Package:** {{ .PackageName }} <br>
+{{if .HasEntities }}
+**Entities:** {{range .Entities}}
+ - **Name**: {{.Name}} <br> **Package**: {{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}
+
+{{end}}{{end}}
+
+--------
+
+{{.Doc}}

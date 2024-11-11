@@ -1,0 +1,6 @@
+// Package {{.PackageName}} {{.Description}}
+package {{.PackageName}}
+
+type QRO struct {
+	/* your custom fields goes here */
+}

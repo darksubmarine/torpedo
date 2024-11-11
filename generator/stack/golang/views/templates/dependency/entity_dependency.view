@@ -1,0 +1,68 @@
+package dependency
+
+import (
+	"{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}"
+	{{if .HasAdapterHTTP }}{{.PackageName}}HTTP "{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}/inputs/http/gin"{{end}}
+	{{.PackageName}}Repo "{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}/outputs/memory"
+	"github.com/darksubmarine/torpedo-lib-go/app"
+	"github.com/darksubmarine/torpedo-lib-go/conf"
+	"github.com/darksubmarine/torpedo-lib-go/log"
+	"github.com/gin-gonic/gin"
+
+{{if .HasNestedLoading }}
+	{{range .FetchNestedLoading}}
+		"{{ .Ref.Meta.Package }}{{ .Ref.Meta.EntityPath }}/{{.Ref.PackageName}}"
+{{end}}{{end}}
+)
+
+type {{ .Name | ToTitle }}Provider struct {
+	app.BaseProvider
+
+	// {{.PackageName}} service instance to be provided.
+	service {{.PackageName}}.IService `torpedo.di:"provide"`
+
+	// {{.PackageName}} repository instance to be provided.
+	repo {{.PackageName}}.IRepository `torpedo.di:"provide"`
+
+	// logger instance provided by LoggerProvider.
+	logger log.ILogger `torpedo.di:"bind"`
+
+	// storageKey is the crypto key to encode encrypted fields at storage level.
+	storageKey []byte `torpedo.di:"bind,name=STORAGE_KEY"`
+
+{{if .HasAdapterHTTP }}
+	// apiV1 group to register endpoints
+	apiV1 *gin.RouterGroup `torpedo.di:"bind,name=APIv1"`
+{{end}}
+
+
+{{if .HasNestedLoading }}
+    {{range .FetchNestedLoading}}
+        {{ .Ref.Name }}Srv {{ .Ref.PackageName }}.IService `torpedo.di:"bind"`
+    {{end}}
+{{end}}
+
+	// private fields initialized by constructor
+	cfg conf.Map
+}
+
+func New{{ .Name | ToTitle }}Provider(config conf.Map) *{{ .Name | ToTitle }}Provider {
+	return &{{ .Name | ToTitle }}Provider{cfg: config}
+}
+
+// Provide provides instances.
+func (p *{{ .Name | ToTitle }}Provider) Provide(c app.IContainer) error {
+
+	// -- Repo (output) ---
+	p.repo = {{.PackageName}}Repo.NewMemoryRepository(p.storageKey)
+
+	// -- Service (business logic)
+	p.service = {{.PackageName}}.NewService(p.repo, p.logger,{{if .HasNestedLoading }}{{range .FetchNestedLoading}}p.{{ .Ref.Name }}Srv,{{end}}{{end}})
+
+    {{if .HasAdapterHTTP }}
+	// -- Controller (input) --
+	controller := {{.PackageName}}HTTP.NewInputGin(p.service, p.logger)
+	controller.Register(p.apiV1)
+    {{end}}
+	return nil
+}

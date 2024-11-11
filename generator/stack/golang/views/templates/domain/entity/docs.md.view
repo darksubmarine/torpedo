@@ -1,0 +1,73 @@
+{{hashtag}} {{ .PackageName | ToTitle }} entity
+
+--------
+
+{{.FetchDocs}}
+
+{{hashtag}}{{hashtag}} Entity Resource Name (TRN)
+
+The entity {{backQuote}}TRN{{backQuote}} (Torpedo Resource Name) is the unique resource name into the torpedo platform.
+
+{{backQuote}}{{backQuote}}{{backQuote}}text
+trn::entity::{{ .PackageName }}::1234567890QWERTYUIOP
+{{backQuote}}{{backQuote}}{{backQuote}}
+
+### TRN JSON representation
+{{backQuote}}{{backQuote}}{{backQuote}}json
+{
+    "metadata":{
+        "objectType":"TRN",
+        "exportedDateMillis":1682083031839
+    },
+    "id":"1234567890QWERTYUIOP",
+    "kind":"entity",
+    "name":"{{ .PackageName }}"
+}
+{{backQuote}}{{backQuote}}{{backQuote}}
+
+{{hashtag}}{{hashtag}} Schema
+
+The schema of the {{backQuote}}{{ .PackageName}}{{backQuote}} entity is given by the next fields:
+
+| Name      | Type    | Description                                           |
+|-----------|---------|-------------------------------------------------------|
+| id        | {{backQuote}}ulid{{backQuote}}    | The entity unique identifier                      |
+| created   | {{backQuote}}date{{backQuote}}    | The entity creation timestamp in milliseconds UTC     |
+| updated   | {{backQuote}}date{{backQuote}}    | The entity modification timestamp in milliseconds UTC |{{range .Schema.Fields}}
+| {{ .Name }} | {{backQuote}}{{ .FieldType }}{{backQuote}}  | {{if .HasDescription }}{{ .Description}}{{else}}{{end}} |{{end}}
+
+
+{{hashtag}}{{hashtag}} Adapters
+
+{{hashtag}}{{hashtag}}{{hashtag}} Inputs
+
+{{hashtag}}{{hashtag}}{{hashtag}}{{hashtag}} HTTP
+The HTTP input exposes a CRUD API:
+
+{{backQuote}}{{backQuote}}{{backQuote}}
+- Create: [POST]   /{{ .Adapters.Input.Http.ResourceName}}
+- Read:   [GET]    /{{ .Adapters.Input.Http.ResourceName}}/:id
+- Update: [PUT]    /{{ .Adapters.Input.Http.ResourceName}}/:id
+- Delete: [DELETE] /{{ .Adapters.Input.Http.ResourceName}}/:id
+{{backQuote}}{{backQuote}}{{backQuote}}
+
+And a query API based on the [Torpedo Query Language:](https://darksubmarine.com/docs/torpedo/tql.html)
+
+{{backQuote}}{{backQuote}}{{backQuote}}
+- TQL: [POST] /{{ .Adapters.Input.Http.ResourceName}}/query
+{{backQuote}}{{backQuote}}{{backQuote}}
+
+{{hashtag}}{{hashtag}}{{hashtag}} Outputs
+
+{{if isNotNil .Adapters.Output.Memory}}
+ - Memory{{end}}
+ {{if isNotNil .Adapters.Output.Redis}}
+ - Redis {{if isNotEmpty .Adapters.Output.Redis.TTL}}
+   - TTL: {{.Adapters.Output.Redis.TTL}} milliseconds{{end}}{{end}}
+{{if isNotNil .Adapters.Output.MongoDB}}
+ - MongoDB {{if isNotEmpty .Adapters.Output.MongoDB.CollectionName}}
+   - Collection: {{.Adapters.Output.MongoDB.CollectionName}}{{end}}{{end}}
+{{if isNotNil .Adapters.Output.Sql}}
+ - SQL {{if isNotEmpty .Adapters.Output.Sql.TableName}}
+   - Table: {{.Adapters.Output.Sql.TableName}}{{end}}{{end}}
+

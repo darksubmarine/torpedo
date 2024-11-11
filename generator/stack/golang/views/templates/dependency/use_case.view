@@ -1,0 +1,50 @@
+package dependency
+
+import (
+	"{{.ImportPath}}"
+	{{if .HasEntities }}{{range .Entities}}
+    	"{{ .ImportPath }}"{{end}}{{end}}
+
+	"github.com/darksubmarine/torpedo-lib-go/app"
+	"github.com/darksubmarine/torpedo-lib-go/log"
+
+	// Uncomment following lines if your use case contains http input.
+	//{{.Name}}HTTP "{{.ImportPath}}/inputs/http"
+	//"github.com/gin-gonic/gin"
+)
+
+type UseCase{{.Name | ToTitle}}Provider struct {
+	app.BaseProvider
+
+	// useCase{{.Name | ToTitle}} provides an {{.PackageName}}.UseCase instance.
+	useCase{{.Name | ToTitle}} *{{.PackageName}}.UseCase `torpedo.di:"provide"`
+
+	// logger instance provided by LoggerProvider.
+	logger log.ILogger `torpedo.di:"bind"`
+
+	{{if .HasEntities }}{{range .Entities}}
+	// {{.Name}}Srv instance of {{.Name}} service.
+    {{.Name}}Srv {{.PackageName}}.IService `torpedo.di:"bind"`
+    {{end}}{{end}}
+
+
+    // Uncomment following lines if your use case contains http input.
+	// api router group to add endpoints under /api prefix
+	//apiV1 *gin.RouterGroup `torpedo.di:"bind,name=APIv1"`
+}
+
+func NewUseCase{{.Name | ToTitle}}Provider() *UseCase{{.Name | ToTitle}}Provider {
+	return &UseCase{{.Name | ToTitle}}Provider{}
+}
+
+// Provide provides the use case instance.
+func (p *UseCase{{.Name | ToTitle}}Provider) Provide(c app.IContainer) error {
+	p.useCase{{.Name | ToTitle}} = {{.PackageName}}.NewUseCase(p.logger{{if .HasEntities }}{{range .Entities}}, p.{{.Name}}Srv{{end}}{{end}})
+
+    /*
+	    Add your use case API endpoints
+	    p.apiV1.POST("/your-use-case-endpoint",
+	        {{.Name}}HTTP.NewController(p.useCase{{.Name | ToTitle}}, p.logger).YourControllerUseCaseMethod)
+	*/
+	return nil
+}

@@ -1,0 +1,15 @@
+// Package sql is an output adapter to store entities in relational databases
+package sql
+
+import "database/sql"
+
+// sqlRepository SQL output repository.
+// Custom repository logic should be placed here.
+type sqlRepository struct {
+	*sqlRepositoryBase // DO NOT REMOVE IT
+}
+
+// NewSqlRepository repository constructor
+func NewSqlRepository(db *sql.DB, driverName string, cryptoKey []byte) *sqlRepository {
+	return &sqlRepository{sqlRepositoryBase: newSqlRepositoryBase(db, driverName, cryptoKey)}
+}

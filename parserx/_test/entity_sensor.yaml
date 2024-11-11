@@ -1,0 +1,41 @@
+version: torpedo.darksub.io/v1.0
+kind: entity
+spec:
+  name: "sensor"
+  plural: "sensors"
+  description: "Measurement sensor"
+  doc: "sensor.md" # custom md to extends basic doc.
+
+  schema:
+    reserved:
+      id:
+        type: guid
+
+    fields:
+      - name: name
+        type: string
+        description: "The sensor full name"
+
+
+      - name: serial
+        type: string
+        optional:
+          default: "XYZ"
+        description: "The sensor serial number"
+
+  adapters:
+    input:
+      - type: http
+
+    output:
+      - type: memory
+
+      - type: mongodb
+
+      - type: redis
+        metadata:
+          ttl: 30000
+
+      - type: redis+mongodb
+
+      - type: sql

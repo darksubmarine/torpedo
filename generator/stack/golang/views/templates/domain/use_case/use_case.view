@@ -1,0 +1,31 @@
+// Package {{.PackageName}} {{.Description}}
+package {{.PackageName}}
+
+import (
+	"github.com/darksubmarine/torpedo-lib-go/log"
+
+	{{if .HasEntities }}{{range .Entities}}
+	"{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}"
+	{{end}}{{end}}
+)
+
+type UseCase struct {
+    *UseCaseBase
+
+    /*  Put here your custom use case attributes */
+}
+
+//  NewUseCase creates a new instance.
+func NewUseCase(logger log.ILogger{{if .HasEntities }}{{range .Entities}},{{ .Name }}Srv {{ .PackageName }}.IService{{end}}{{end}}) *UseCase {
+
+    return &UseCase{
+        UseCaseBase: NewUseCaseBase(logger,
+            {{if .HasEntities }}{{range .Entities}}{{ .Name }}Srv,{{end}}{{end}}
+            )}
+}
+
+/*
+    Write here all the methods to cover your use case logic!
+
+func (uc *UseCase) YourAwesomeUseCase() error { return nil }
+*/

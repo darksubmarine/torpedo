@@ -1,0 +1,39 @@
+**v0.5.7 (Nov 11, 2024)**
+- Going to open source!
+- Defines data types (string, int, float, boolean, date)
+    - String (string)
+    - Integer (int64)
+    - Float (float64)
+    - Boolean (boolean)
+    - List (slice) done as custom field, not supported in yaml spec
+- Review and finish the UPDATE logic
+- HTTP Error response struct
+- HTTP Partial DTO check method to send bad request
+- Error codes
+- Gin middlewares support
+    - Entity Create (POST)
+    - Entity Read (GET)
+    - Entity Update (PUT)
+    - Entity Delete (DEL)
+- TQL at `core entity` and at endpoint `/<entity_plural_name>/query`
+    - TQL support
+        - MongoDB
+        - SQL
+    - Error handler with error codes
+        - 400x if query has errors
+        - 500x if search errored
+- Input support
+    - HTTP Gin
+- Output support
+    - Memory _(for unit tests)_
+    - MongoDB
+    - Redis
+    - Composite Redis _(as cache)_ + MongoDB
+    - SQL output support
+    - Composite Redis _(as cache)_ + SQL
+- Entity relationship
+    - HasMany
+    - HasOne
+    - Nested loading
+- Encryption at storage
+- Logs

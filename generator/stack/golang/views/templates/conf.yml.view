@@ -1,0 +1,13 @@
+logger:
+  # The log level are mapped to log.slog Level. If this level value is not valid INFO will be set as default.
+  # The following are valid values: DEBUG, INFO, WARN/WARNING, ERROR
+  level: info
+
+domain:
+  storage:
+    # The key argument should be the AES key, either 16, 24, or 32 bytes
+    # to select AES-128, AES-192, or AES-256.
+    key: "the-key-has-to-be-32-bytes-long!"
+
+http:
+  port: 8081
