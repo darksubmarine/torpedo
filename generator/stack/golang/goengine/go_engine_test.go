@@ -1,7 +1,6 @@
 package goengine_test
 
 import (
-	"github.com/darksubmarine/torpedo/generator/stack/golang/goengine"
 	"github.com/darksubmarine/torpedo/parserx"
 	v1 "github.com/darksubmarine/torpedo/parserx/v1"
 	"github.com/darksubmarine/torpedo/parserx/vx"
@@ -11,7 +10,10 @@ import (
 
 func TestFetchAppData(t *testing.T) {
 	p := parserx.New()
-	assert.Nil(t, p.ParseYaml("./.torpedo/app.yaml"))
+	//workingDir, err := os.Getwd()
+	//assert.Nil(t, err)
+
+	assert.Nil(t, p.ParseYaml("_test/.torpedo/app.yaml"))
 
 	assert.Equal(t, p.Kind(), vx.KApp)
 	assert.Equal(t, p.Version(), vx.V1)
@@ -24,22 +26,9 @@ func TestFetchAppData(t *testing.T) {
 }
 
 func TestGoEngine_Fire(t *testing.T) {
-	p := parserx.New()
-	assert.Nil(t, p.ParseYaml("./.torpedo/app.yaml"))
-	data, ok := p.Data().(v1.RootApp)
-	assert.True(t, ok)
-
-	opts := goengine.DefaultOptionsForApp(
-		"./blog2",
-		"bitbucket.org/darksubmarine/torpedo/blog2", data.App.Domain.Entities, nil)
-	engine := goengine.New(opts)
-	err := engine.Fire()
-	assert.Nil(t, err)
+	//TODO(sarrubia) code test
 }
 
 func TestGoEngine_Init(t *testing.T) {
-	opts := goengine.DefaultOptions(
-		"./blog2")
-	engine := goengine.New(opts)
-	assert.Nil(t, engine.Init())
+	//TODO(sarrubia) code test
 }

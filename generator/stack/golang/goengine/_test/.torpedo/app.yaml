@@ -1,0 +1,17 @@
+#
+# Application: Machine sensor
+# Description: Application demo app
+
+version: torpedo.darksub.io/v1.0
+kind: app
+spec:
+  name: "Machine"
+  description: "Machine measure example app"
+  stack:
+    lang: go
+    package: "github.com/darksubmarine/torpedo/_examples/machine"
+  domain:
+    entities:
+      - sensor.yaml
+      - machine.yaml
+

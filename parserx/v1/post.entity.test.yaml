@@ -5,9 +5,9 @@
 # Author: Sebastian <sebastian@darksubmarine.com>
 #
 
-version: "1.0"
+version: torpedo.darksub.io/v1.0
 kind: entity
-entity:
+spec:
   name: "post"
   plural: "posts"
   description: "The blog post entity"
@@ -27,6 +27,7 @@ entity:
         doc: |
           The post title to be used as part of the post page.
           Also as part of the SEO indexes.
+
 
       - name: secret
         type: string
@@ -50,8 +51,6 @@ entity:
         type: string
         description: "The author"
         doc: "The author"
-        validate:
-
 
   relationships:
     - name: comments
@@ -66,9 +65,10 @@ entity:
     - name: authors
       ref: ".torpedo/entities/author.yaml"
       cardinality: hasMany # hasOne, hasMany
-# Older version of loading. Deprecated
-#      eagerLoading:
-#        maxItems: 100
+      load:
+        type: nested # nested, eager, lazy
+        metadata:
+          maxItems: 100
 
 
   adapters:

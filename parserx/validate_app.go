@@ -6,25 +6,6 @@ import (
 	"github.com/darksubmarine/torpedo/utils"
 )
 
-/*
-version: torpedo.darksub.io/v1.0
-kind: app
-spec:
-  name: "Blog"
-  description: "Simple blog app"
-  stack:
-    lang: go
-    package: "bitbucket.org/darksubmarine/torpedo/blog3"
-  domain:
-    entities:
-      - author.yaml
-      - post.yaml
-      - comment.yaml
-      - sensor.yaml
-    useCases:
-      - onboarding.yaml
-*/
-
 func validateAppV1(data v1.RootApp, filename string) []error {
 	errList := make([]error, 0)
 
