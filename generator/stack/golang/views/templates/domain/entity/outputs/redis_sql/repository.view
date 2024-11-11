@@ -1,0 +1,18 @@
+// Package redis_sql is an output adapter to store entities into sql storage with redis as cache layer
+package redis_sql
+
+import (
+	"database/sql"
+	"github.com/go-redis/redis/v8"
+)
+
+// redisSqlRepository Redis+SQL output repository.
+// Custom repository logic should be placed here.
+type redisSqlRepository struct {
+	*redisSqlRepositoryBase
+}
+
+// NewRedisSqlRepository repository constructor
+func NewRedisSqlRepository(client *redis.Client, db *sql.DB, driverName string, cryptoKey []byte) *redisSqlRepository {
+	return &redisSqlRepository{redisSqlRepositoryBase: newRedisSqlRepositoryBase(client, db, driverName, cryptoKey)}
+}

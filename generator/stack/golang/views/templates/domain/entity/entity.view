@@ -1,0 +1,12 @@
+// Package {{.PackageName}} {{.Description}}
+package {{.PackageName}}
+
+// {{ .EntityName }} {{.Description}}
+type {{ .EntityName }} struct {
+	*entityBase // DO NOT REMOVE IT
+}
+
+// New is a {{ .EntityName }} constructor function
+func New() *{{ .EntityName }} {
+	return &{{ .EntityName }}{entityBase: newEntityBase()}
+}

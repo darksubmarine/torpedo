@@ -1,0 +1,12 @@
+// Package mongodb is an output adapter to store entities in MongoDB
+package mongodb
+
+import (
+    "{{ .Meta.Package }}{{ .Meta.EntityPath }}/{{.PackageName}}"
+)
+
+type DMO struct {
+    *{{.PackageName}}.EntityDMO {{backQuote}}bson:"-"{{backQuote}} // Do not remove it. This will let you add custom encrypted fields and more.
+
+	/* your custom fields goes here */
+}

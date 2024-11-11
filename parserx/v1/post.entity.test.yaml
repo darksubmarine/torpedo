@@ -1,0 +1,97 @@
+#
+# Entity: Post
+# Description: the Blog Post entity
+# Date: 2023-05-23
+# Author: Sebastian <sebastian@darksubmarine.com>
+#
+
+version: "1.0"
+kind: entity
+entity:
+  name: "post"
+  plural: "posts"
+  description: "The blog post entity"
+  doc: ".torpedo/entities/docs/post.md" # custom md to extends basic doc.
+
+  schema:
+    reserved:
+      # By default, an ID is assigned as ULID format (string).
+      # the field name id is reserved, but you can configure it from this section
+      id:
+        type: ulid # supported formats UUID/ULID
+
+    fields:
+      - name: title
+        type: string
+        description: "The post title"
+        doc: |
+          The post title to be used as part of the post page.
+          Also as part of the SEO indexes.
+
+      - name: secret
+        type: string
+        encrypted: true
+        description: "The post secret"
+        doc: "The post secret"
+
+      - name: pubDate
+        type: date
+        description: "The publication date"
+        doc: "The publication date"
+
+      - name: published
+        type: boolean
+        description: "Sets the post to be publish"
+        doc: "Sets the post to be publish"
+        optional:
+          default: false
+
+      - name: author
+        type: string
+        description: "The author"
+        doc: "The author"
+        validate:
+
+
+  relationships:
+    - name: comments
+      type: $rel # $rel or $urn
+      ref: ".torpedo/entities/comment.yaml"
+      cardinality: hasMany # hasOne, hasMany
+      load:
+        type: nested # nested, eager, lazy
+        metadata:
+          maxItems: 100
+
+    - name: authors
+      ref: ".torpedo/entities/author.yaml"
+      cardinality: hasMany # hasOne, hasMany
+# Older version of loading. Deprecated
+#      eagerLoading:
+#        maxItems: 100
+
+
+  adapters:
+    input:
+      - type: http
+        metadata:
+          resourceName: "works-post"
+
+    output:
+      - type: memory
+
+      - type: mongodb
+        metadata:
+          collection: "posts"
+
+      - type: redis
+        metadata:
+          ttl: 30000
+
+      - type: sql
+        metadata:
+          table: "posts"
+
+      - type: redis+mongodb
+
+      - type: redis+sql

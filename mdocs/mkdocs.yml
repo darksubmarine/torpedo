@@ -1,0 +1,169 @@
+# Dark Submarine_ docs: Material + MkDocs, an excellent static site generator geared towards project documentation.
+# It is built using Google's Material Design guidelines
+
+#--------------------------------
+#  PROJECT CUSTOM CONFIGURATION
+#--------------------------------
+
+# Project information
+site_name: Torpedo
+site_description: Hexagonal Architecture Entity scaffolding tool
+site_author: Dark Submarine_
+site_url: https://darksubmarine.com/docs/torpedo/
+
+repo_name: 'darksubmarine/torpedo'
+repo_url: 'https://github.com/darksubmarine/torpedo'
+#edit_uri: ''
+
+# Main menu
+nav:
+  - Introduction: index.md
+  - Architecture:
+      - Overview: architecture.md
+      - Application Container: arch_application_container.md
+      - Components:
+        - Entity: entity.md
+        - Service: service.md
+        - DTOs: dtos.md
+        - DMOs: dmos.md
+        - Adapters: adapters.md
+        - Use Case: use_case.md
+
+  - Quick Start:
+    - Install: quickstart_install.md
+    - Create a project:
+        - 1. Initialize: quickstart_create_project.md
+        - 2. Inject dependencies: quickstart_dependency.md
+        - 3. Use Cases: quickstart_use_cases.md
+        - 4. Run it!: quickstart_run.md
+  - The Basics:
+      - Entity:
+          - Definition: basic_entity_definition.md
+          - Service: basic_entity_service.md
+          - Inputs:
+              - Adapters: basic_entity_input_adapters.md
+              - HTTP REST API: basic_entity_input_restapi.md
+              #- GraphQL: basic_entity_input_graphql.md
+          - Output:
+              - Adapters (Repository): basic_entity_output_adapters.md
+              - Memory: basic_entity_output_memory.md
+              - Redis: basic_entity_output_redis.md
+              - SQL: basic_entity_output_sql.md
+              - MongoDB: basic_entity_output_mongodb.md
+      - Use Case:
+          - Definition: basic_usecase_definition.md
+#          - Business Logic: basic_usecase_logic.md
+      - Domain:
+          - Service: basic_domain_service.md
+          - Context: basic_domain_context.md
+  - Going deeper:
+      - Dependency injection: advanced_di.md
+      - Extending Entity with custom fields:
+        - Naming convention: advanced_entity_naming_fields.md
+        - Entity Getter and Setter: advanced_entity_getter_setter.md
+        - Adding custom fields: advanced_entity_add_fields.md
+        - Optional and Encrypted: advanced_entity_optional_encrypted_fields.md
+
+      - Domain Export: advanced_domain_export.md
+      - Hooks:
+        - Service: advanced_service_hooks.md
+        - Storage:
+            - MongoDB: advanced_storage_mongodb_hooks.md
+      - REST API:
+        - Overview: advanced_rest_api_setup.md
+        - OpenApi: advanced_rest_api_oas.md
+        - Context: advanced_rest_api_context.md
+        - Authentication / Authorization: advanced_rest_api_authx.md
+        - Monitoring: advanced_rest_api_monitoring.md
+        - Loging: advanced_rest_api_loging.md
+#  - Schemas:
+#      - Application: schema_app.md
+#      - Entity: schema_entity.md
+#      - Use Case: schema_usecase.md
+  - TQL: tql.md
+#  - Limitations: limitations.md
+
+use_directory_urls: false
+
+# Uncomment next line to change default (docs) documentation folder
+docs_dir: files
+
+# Uncomment next line to disable "search" plugin
+#plugins:
+#  - blog:
+#      enabled: true
+#      blog_dir: blog
+#      post_dir: "{blog}/articles"
+
+#-------------------------------
+# SITE AND THEME CONFIGURATIONS
+#-------------------------------
+
+# Copyright
+copyright: 'Copyright &copy; 2024 Dark Submarine LLC'
+
+theme:
+  name: material
+  logo: 'img/darksub.io.v1.svg'
+  favicon: 'img/favicon.png'
+  palette:
+    primary: 'white'
+    accent: 'red'
+  font:
+    text: 'Ubuntu'
+    code: 'Ubuntu Mono'
+  feature:
+    tabs: true
+  features:
+     - content.code.annotate
+     - content.code.copy
+  icon:
+    admonition:
+#      note: material/tag-16
+#      abstract: material/checklist-16
+#      info: material/info-16
+#      tip: material/squirrel-16
+#      success: material/check-16
+#      question: material/question-16
+#      warning: material/alert-16
+#      failure: material/x-circle-16
+#      danger: material/zap-16
+#      bug: material/bug-16
+#      example: material/beaker-16
+#      quote: material/quote-16
+
+
+extra_css:
+  - 'css/extra.css'
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: 'https://github.com/darksubmarine'
+
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - admonition
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      linenums: 1
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+
+

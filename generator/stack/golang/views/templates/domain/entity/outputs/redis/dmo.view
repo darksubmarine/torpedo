@@ -1,0 +1,6 @@
+// Package redis implements Redis output
+package redis
+
+type DMO struct {
+	/* your custom fields goes here */
+}

@@ -1,0 +1,78 @@
+package dependency
+
+import (
+	"{{ .ImportPath }}"
+	"{{ .ImportPath }}/inputs/http"
+{{ range .Entities }}
+    "{{ .ImportPath }}"
+{{end}}
+
+	"github.com/darksubmarine/torpedo-lib-go/app"
+	"github.com/darksubmarine/torpedo-lib-go/conf"
+	"github.com/darksubmarine/torpedo-lib-go/log"
+	{{if .HasAdapterHTTP }}"github.com/gin-gonic/gin"{{end}}
+
+	{{ range .UseCases }}
+    "{{.ImportPath}}"
+    {{end}}
+)
+
+type DomainProvider struct {
+	app.BaseProvider
+
+	// -- Providers --
+
+	// domainCtx provide domain context instance
+	domainCtx *domain.Context `torpedo.di:"provide"`
+
+	// domainSrv provide domain service instance
+	domainSrv domain.IDomainService `torpedo.di:"provide"`
+
+	// -- Bind services --
+
+    {{ range .Entities }}
+    // {{.Name}} service wired instance.
+    {{.Name}}Srv {{.PackageName}}.IService `torpedo.di:"bind"`
+    {{end}}
+
+	// -- Bind use cases --
+	//ucFoo *foo.UseCase `torpedo.di:"bind"`
+	//ucBar *bar.UseCase `torpedo.di:"bind"`
+	{{ range .UseCases }}
+    // {{.Name}} use case wired instance.
+    uc{{.Name | ToTitle}} *{{.PackageName}}.UseCase `torpedo.di:"bind"`
+    {{end}}
+
+	// logger instance provided by LoggerProvider.
+	logger log.ILogger `torpedo.di:"bind"`
+
+{{if .HasAdapterHTTP }}
+    // apiV1 group to register endpoints
+	apiV1 *gin.RouterGroup `torpedo.di:"bind,name=APIv1"`
+{{end}}
+
+	// private fields initialized by constructor
+	cfg conf.Map
+}
+
+func NewDomainProvider(config conf.Map) *DomainProvider {
+	return &DomainProvider{cfg: config}
+}
+
+// Provide provides instances.
+func (p *DomainProvider) Provide(c app.IContainer) error {
+
+	p.domainCtx = domain.NewContext({{ range .Entities }}
+	    p.{{.Name}}Srv,
+{{end}})
+
+	p.domainSrv = domain.NewService(p.domainCtx /*, p.ucFoo, p.ucBar */)
+
+{{if .HasAdapterHTTP }}
+    // API registration
+    domainController := http.NewDomainController(p.domainSrv, p.logger)
+    domainController.Register(p.apiV1)
+{{end}}
+
+	return nil
+}

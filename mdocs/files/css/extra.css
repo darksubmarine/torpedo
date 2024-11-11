@@ -1,0 +1,53 @@
+
+.md-main{background-color: rgb(255,255,255)}
+
+
+/* Callouts */ /* admonition */
+div.admonition {background-color: #ffffff;}
+.md-typeset .admonition,
+.md-typeset details {
+    border-width: 0;
+    border-left-width: 4px;
+}
+
+.highlight .hll {
+    background-color: #ccfacd;
+}
+
+
+/* Tables */
+/*div.md-typeset__table {width: 100%;}*/
+div.md-typeset__table table tbody {background-color: #ffffff;}
+
+/*code {color: rgba(199,41,28,1) !important;}*/
+
+.md-sidebar--secondary .md-sidebar__scrollwrap {border-left: 4px solid rgb(237,237,237);}
+
+p[img] {text-align: center;}
+
+.md-footer__inner {
+    background-color: rgba(0,0,0,1);
+    color: #fff;
+}
+
+.md-footer-meta {
+    background-color: rgba(0,0,0,1);
+}
+
+.md-footer {
+    background-color: rgba(0,0,0,1);
+}
+
+/* custom colors */
+
+.dsMainColor {color:#d80000;}
+p code, li code {color: #d80000 !important;}
+
+/*Mermaid diagrams*/
+.mermaid {text-align: center;}
+
+.md-typeset code {
+    background-color: #fdfdfd;
+}
+
+
